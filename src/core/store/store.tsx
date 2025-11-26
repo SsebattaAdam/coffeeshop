@@ -17,8 +17,20 @@ import type {
 import BeansData from '../constants/data/BeansData';
 import CoffeeData from '../constants/data/CoffeeData';
 
-// Import MMKV storage adapter
-import {mmkvStorage} from './mmkvStorage';
+// Import MMKV storage adapter with fallback
+let mmkvStorage: any;
+try {
+  const storageModule = require('./mmkvStorage');
+  mmkvStorage = storageModule.mmkvStorage;
+} catch (error) {
+  console.warn('MMKV storage not available, using in-memory fallback:', error);
+  // Fallback storage that doesn't persist
+  mmkvStorage = {
+    setItem: () => Promise.resolve(true),
+    getItem: () => Promise.resolve(null),
+    removeItem: () => Promise.resolve(),
+  };
+}
 
 // Persist config
 const persistConfig = {
@@ -163,7 +175,6 @@ const cartReducer = (state = initialCartState, action: any) => {
         draft.cartList = [];
         draft.cartPrice = 0;
         break;
-
       default:
         return state;
     }
@@ -175,6 +186,7 @@ const rootReducer = combineReducers({
   beans: beansReducer,
   coffee: coffeeReducer,
   cart: cartReducer,
+
 });
 
 // Persist reducer
@@ -195,6 +207,8 @@ export const persistor = persistStore(store);
 // Verify store is created
 if (!store) {
   console.error('Store was not created properly!');
+} else {
+  console.log('Store created successfully');
 }
 
 // Types
