@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_bold,
     color: COLORS.primaryWhiteHex,
     marginBottom: SPACING.space_10,
+   
   },
   subtitle: {
     fontSize: FONTSIZE.size_16,

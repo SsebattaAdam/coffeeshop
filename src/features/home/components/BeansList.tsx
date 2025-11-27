@@ -2,26 +2,26 @@ import React from 'react';
 import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native';
 
 import CoffeeCard from './CoffeeCard';
-import { CoffeeItem } from '../../../core/store/types';
+import { BeanItem } from '../../../core/store/types';
 import { SPACING, FONTSIZE, FONTFAMILY, COLORS } from '../../../core/constants/theme/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-interface CoffeeListProps {
-  data: CoffeeItem[];
-  onCoffeePress: (item: CoffeeItem) => void;
-  onFavoritePress: (item: CoffeeItem) => void;
+interface BeansListProps {
+  data: BeanItem[];
+  onBeanPress: (item: BeanItem) => void;
+  onFavoritePress: (item: BeanItem) => void;
 }
 
-const CoffeeList: React.FC<CoffeeListProps> = ({
+const BeansList: React.FC<BeansListProps> = ({
   data,
-  onCoffeePress,
+  onBeanPress,
   onFavoritePress,
 }) => {
   if (data.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No coffee found</Text>
+        <Text style={styles.emptyText}>No beans found</Text>
       </View>
     );
   }
@@ -40,8 +40,8 @@ const CoffeeList: React.FC<CoffeeListProps> = ({
           key={item.id || index}
           style={[styles.cardWrapper, { width: cardWidth }]}>
           <CoffeeCard
-            item={item}
-            onPress={() => onCoffeePress(item)}
+            item={item as any}
+            onPress={() => onBeanPress(item)}
             onFavoritePress={() => onFavoritePress(item)}
           />
         </View>
@@ -75,5 +75,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CoffeeList;
+export default BeansList;
 

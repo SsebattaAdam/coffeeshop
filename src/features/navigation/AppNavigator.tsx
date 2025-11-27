@@ -5,16 +5,15 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from '../../core/store/store';
 import BottomTabNavigator from './BottomTabNavigator/BottomTabNavigator';
+import DetailScreen from '../../features/home/screens/DetailScreen';
 import {View, ActivityIndicator} from 'react-native';
 import {COLORS} from '../../core/constants/theme/theme';
+import type {CoffeeItem} from '../../core/store/types';
 
 // Define your navigation param types
 export type RootStackParamList = {
   MainTabs: undefined;
-  // Add other screens as needed
-  // BookList: {title: string; data: any[]};
-  // Favorites: undefined;
-  // Payment: {book: any};
+  CoffeeDetails: { coffee: CoffeeItem };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -29,10 +28,7 @@ function NavigatorContent() {
           animation: 'slide_from_bottom',
         }}>
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
-        {/* Add other screens here */}
-        {/* <Stack.Screen name="BookList" component={BookListScreen} /> */}
-        {/* <Stack.Screen name="Favorites" component={FavoritesScreen} /> */}
-        {/* <Stack.Screen name="Payment" component={PaymentScreen} /> */}
+        <Stack.Screen name="CoffeeDetails" component={DetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

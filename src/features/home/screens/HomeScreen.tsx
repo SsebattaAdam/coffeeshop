@@ -11,13 +11,19 @@ import DynamicHeader from '../../../core/components/DynamicHeader';
 import SearchBar from '../components/SearchBar';
 import CategoryFilter from '../components/CategoryFilter';
 import CoffeeList from '../components/CoffeeList';
+import BeansList from '../components/BeansList';
 import {useAppSelector, useAppDispatch} from '../../../core/store/hooks';
 import {getCategoriesFromData, filterDataByCategory, searchData} from '../utils/helpers';
 import type {CoffeeItem} from '../../../core/store/types';
+import type {BeanItem} from '../../../core/store/types';
 import {useNavigation} from '@react-navigation/native';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import type {RootStackParamList} from '../../navigation/AppNavigator';
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const dispatch = useAppDispatch();
   
   // Get data from Redux store
@@ -42,20 +48,35 @@ const HomeScreen = () => {
     return filtered;
   }, [coffeeList, categoryIndex.category, searchText]);
 
+  // Filter beans data (beans don't need category filtering, just search)
+  const sortedBeans = useMemo(() => {
+    return searchData(beanList, searchText);
+  }, [beanList, searchText]);
+
   // Handlers
   const handleCategoryChange = (index: number, category: string) => {
     setCategoryIndex({index, category});
   };
 
+
   const handleCoffeePress = (item: CoffeeItem) => {
     // Navigate to coffee details screen
-    console.log('Coffee pressed:', item.name);
-    // navigation.navigate('CoffeeDetails', { coffee: item });
+    navigation.navigate('CoffeeDetails', { coffee: item });
   };
 
-  const handleFavoritePress = (item: CoffeeItem) => {
+  const handleCoffeeFavoritePress = (item: CoffeeItem) => {
     // Toggle favorite
     dispatch({type: 'TOGGLE_COFFEE_FAVORITE', payload: item.id});
+  };
+
+  const handleBeanPress = (item: BeanItem) => {
+    // Navigate to coffee details screen (can reuse the same screen)
+    navigation.navigate('CoffeeDetails', { coffee: item as any });
+  };
+
+  const handleBeanFavoritePress = (item: BeanItem) => {
+    // Toggle favorite
+    dispatch({type: 'TOGGLE_BEAN_FAVORITE', payload: item.id});
   };
 
   return (
@@ -69,10 +90,10 @@ const HomeScreen = () => {
           },
         }}
         rightIcon={{
-          name: 'cart',
+          name: 'user',
           onPress: () => {
-            console.log('Cart pressed');
-            // Add cart navigation logic here
+            console.log('Profile pressed');
+            // Add profile navigation logic here
           },
         }}
         title={null}
@@ -104,8 +125,18 @@ const HomeScreen = () => {
         <CoffeeList
           data={sortedCoffee}
           onCoffeePress={handleCoffeePress}
-          onFavoritePress={handleFavoritePress}
+          onFavoritePress={handleCoffeeFavoritePress}
         />
+
+        {/* Coffee Beans Section */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Coffee beans</Text>
+          <BeansList
+            data={sortedBeans}
+            onBeanPress={handleBeanPress}
+            onFavoritePress={handleBeanFavoritePress}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -120,15 +151,26 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   titleContainer: {
-    paddingHorizontal: SPACING.space_20,
-    paddingTop: SPACING.space_20,
-    paddingBottom: SPACING.space_10,
+    paddingHorizontal: SPACING.space_15,
+    paddingTop: SPACING.space_10,
+    paddingBottom: SPACING.space_8,
   },
   titleText: {
-    fontSize: FONTSIZE.size_28,
+    fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryWhiteHex,
-    lineHeight: FONTSIZE.size_28 * 1.2,
+    lineHeight: FONTSIZE.size_20 * 1.1,
+  },
+  sectionContainer: {
+    marginTop: SPACING.space_12,
+    paddingBottom: SPACING.space_15,
+  },
+  sectionTitle: {
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_semibold,
+    color: COLORS.primaryWhiteHex,
+    paddingHorizontal: SPACING.space_15,
+    marginBottom: SPACING.space_10,
   },
 });
 

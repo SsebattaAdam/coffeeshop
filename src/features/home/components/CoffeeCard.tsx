@@ -42,7 +42,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
             activeOpacity={0.7}>
             <CustomIcon
               name={item.favourite ? 'like' : 'like'}
-              size={FONTSIZE.size_20}
+              size={FONTSIZE.size_18}
               color={
                 item.favourite
                   ? COLORS.primaryOrangeHex
@@ -59,7 +59,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
           <View style={styles.ratingContainer}>
             <CustomIcon
               name="star"
-              size={FONTSIZE.size_16}
+              size={FONTSIZE.size_14}
               color={COLORS.primaryOrangeHex}
             />
             <Text style={styles.ratingText}>{item.average_rating}</Text>
@@ -75,34 +75,33 @@ const styles = StyleSheet.create({
     borderRadius: SPACING.space_15,
     backgroundColor: COLORS.primaryDarkGreyHex,
     overflow: 'hidden',
-    marginBottom: SPACING.space_20,
     width: '100%',
   },
   coffeeImage: {
     width: '100%',
-    height: 200,
+    height: 150,
     resizeMode: 'cover',
   },
   cardContent: {
-    padding: SPACING.space_15,
+    padding: SPACING.space_12,
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: SPACING.space_10,
+    marginBottom: SPACING.space_8,
   },
   cardInfo: {
     flex: 1,
   },
   coffeeName: {
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhiteHex,
-    marginBottom: SPACING.space_4,
+    marginBottom: SPACING.space_2,
   },
   coffeeSpecialIngredient: {
-    fontSize: FONTSIZE.size_12,
+    fontSize: FONTSIZE.size_10,
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.primaryLightGreyHex,
   },
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   coffeePrice: {
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
     fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryOrangeHex,
   },
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     gap: SPACING.space_4,
   },
   ratingText: {
-    fontSize: FONTSIZE.size_14,
+    fontSize: FONTSIZE.size_12,
     fontFamily: FONTFAMILY.poppins_medium,
     color: COLORS.primaryWhiteHex,
   },
