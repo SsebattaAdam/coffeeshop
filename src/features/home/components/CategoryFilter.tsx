@@ -53,21 +53,21 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: SPACING.space_20,
+    marginVertical: SPACING.space_10,
   },
   scrollViewContent: {
-    paddingHorizontal: SPACING.space_20,
-    gap: SPACING.space_15,
+    paddingHorizontal: SPACING.space_15,
+    gap: SPACING.space_12,
   },
   categoryItem: {
     alignItems: 'center',
-    marginRight: SPACING.space_15,
+    marginRight: SPACING.space_12,
   },
   categoryText: {
-    fontSize: FONTSIZE.size_16,
+    fontSize: FONTSIZE.size_14,
     fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryLightGreyHex,
-    marginBottom: SPACING.space_4,
+    marginBottom: SPACING.space_2,
   },
   categoryTextActive: {
     color: COLORS.primaryOrangeHex,

@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 60,
-    paddingHorizontal: SPACING.space_20,
+    height: 45,
+    paddingHorizontal: SPACING.space_15,
     backgroundColor: 'transparent',
   },
   leftContainer: {
@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconButton: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: SPACING.space_10,
+    borderRadius: SPACING.space_8,
   },
   title: {
     fontSize: FONTSIZE.size_20,

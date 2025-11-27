@@ -22,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <CustomIcon
           style={styles.InputIcon}
           name="search"
-          size={FONTSIZE.size_18}
+          size={FONTSIZE.size_16}
           color={
             searchText.length > 0
               ? COLORS.primaryOrangeHex
@@ -44,23 +44,24 @@ const SearchBar: React.FC<SearchBarProps> = ({
 const styles = StyleSheet.create({
   InputContainerComponent: {
     flexDirection: 'row',
-    margin: SPACING.space_20,
-    borderRadius: SPACING.space_20,
+    marginHorizontal: SPACING.space_15,
+    marginVertical: SPACING.space_10,
+    borderRadius: SPACING.space_15,
     backgroundColor: COLORS.primaryGreyHex,
     alignItems: 'center',
-    paddingHorizontal: SPACING.space_20,
-    paddingVertical: SPACING.space_15,
+    paddingHorizontal: SPACING.space_15,
+    paddingVertical: SPACING.space_10,
   },
   InputIcon: {
     marginHorizontal: SPACING.space_10,
   },
   TextInputContainer: {
     flex: 1,
-    height: SPACING.space_20 * 3,
+    height: SPACING.space_20 * 2,
     fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_14,
+    fontSize: FONTSIZE.size_12,
     color: COLORS.primaryWhiteHex,
-    marginLeft: SPACING.space_10,
+    marginLeft: SPACING.space_8,
   },
 });
 

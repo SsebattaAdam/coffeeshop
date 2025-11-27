@@ -204,12 +204,6 @@ export const store = configureStore({
 // Persistor
 export const persistor = persistStore(store);
 
-// Verify store is created
-if (!store) {
-  console.error('Store was not created properly!');
-} else {
-  console.log('Store created successfully');
-}
 
 // Types
 export type RootState = ReturnType<typeof store.getState>;
