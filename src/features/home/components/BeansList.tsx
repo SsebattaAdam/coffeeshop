@@ -53,6 +53,7 @@ const BeansList: React.FC<BeansListProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexGrow: 0,
+   
   },
   scrollContent: {
     paddingHorizontal: SPACING.space_15,

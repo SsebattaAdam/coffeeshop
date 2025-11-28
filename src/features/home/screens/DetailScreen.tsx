@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Dimensions, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING, BORDERRADIUS } from '../../../core/constants/theme/theme'
 import CustomIcon from '../../../core/components/customIcon'
-import { useAppDispatch } from '../../../core/store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../core/store/hooks'
 import { RootStackParamList } from '../../navigation/AppNavigator'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -16,29 +16,46 @@ const DetailScreen = () => {
   const dispatch = useAppDispatch();
   const { coffee } = route.params;
   
-  const [selectedSize, setSelectedSize] = useState<string>(coffee.prices[0]?.size || 'M');
+  // Get current favorite state from store
+  const coffeeList = useAppSelector(state => state.coffee.coffeeList);
+  const beanList = useAppSelector(state => state.beans.beansList);
+  const currentItem = coffee.type === 'Bean' 
+    ? beanList.find(item => item.id === coffee.id)
+    : coffeeList.find(item => item.id === coffee.id);
+  const isFavorite = currentItem?.favourite || coffee.favourite || false;
+  
+  // Use current item from store if available, otherwise use route param
+  const displayItem = currentItem || coffee;
+  
+  const [selectedSize, setSelectedSize] = useState<string>(displayItem.prices[0]?.size || 'M');
 
   const handleFavoritePress = () => {
-    dispatch({ type: 'TOGGLE_COFFEE_FAVORITE', payload: coffee.id });
+    // Check if it's a coffee or bean based on type
+    if (displayItem.type === 'Bean') {
+      dispatch({ type: 'TOGGLE_BEAN_FAVORITE', payload: displayItem.id });
+    } else {
+      dispatch({ type: 'TOGGLE_COFFEE_FAVORITE', payload: displayItem.id });
+    }
   };
 
   const handleAddToCart = () => {
-    const selectedPrice = coffee.prices.find(p => p.size === selectedSize);
+    const selectedPrice = displayItem.prices.find(p => p.size === selectedSize);
     if (selectedPrice) {
       dispatch({
         type: 'ADD_TO_CART',
         payload: {
-          id: coffee.id,
-          name: coffee.name,
-          roasted: coffee.roasted,
-          imagelink_square: coffee.imagelink_square,
-          special_ingredient: coffee.special_ingredient,
-          prices: coffee.prices,
-          type: coffee.type,
+          id: displayItem.id,
+          name: displayItem.name,
+          roasted: displayItem.roasted,
+          imagelink_square: displayItem.imagelink_square,
+          special_ingredient: displayItem.special_ingredient,
+          prices: displayItem.prices,
+          type: displayItem.type,
           quantity: 1,
           size: selectedSize,
         },
       });
+      Alert.alert('Success', `${displayItem.name} added to cart!`);
     }
   };
 
@@ -52,7 +69,7 @@ const DetailScreen = () => {
         {/* Coffee Image */}
         <View style={styles.imageContainer}>
           <Image
-            source={coffee.imagelink_portrait || coffee.imagelink_square}
+            source={displayItem.imagelink_portrait || displayItem.imagelink_square}
             style={styles.coffeeImage}
             resizeMode="cover"
           />
@@ -71,7 +88,7 @@ const DetailScreen = () => {
             <CustomIcon
               name="like"
               size={FONTSIZE.size_20}
-              color={coffee.favourite ? COLORS.primaryRedHex : COLORS.primaryWhiteHex}
+              color={isFavorite ? COLORS.primaryRedHex : COLORS.primaryWhiteHex}
             />
           </TouchableOpacity>
         </View>
@@ -82,9 +99,9 @@ const DetailScreen = () => {
           <View style={styles.titleContainer}>
             <View style={styles.titleRow}>
               <View style={styles.titleTextContainer}>
-                <Text style={styles.coffeeName}>{coffee.name}</Text>
+                <Text style={styles.coffeeName}>{displayItem.name}</Text>
                 <Text style={styles.coffeeSpecialIngredient}>
-                  {coffee.special_ingredient}
+                  {displayItem.special_ingredient}
                 </Text>
               </View>
               {/* Ingredient Icons */}
@@ -108,11 +125,11 @@ const DetailScreen = () => {
                   size={FONTSIZE.size_20}
                   color={COLORS.primaryOrangeHex}
                 />
-                <Text style={styles.ratingText}>{coffee.average_rating}</Text>
-                <Text style={styles.reviewsText}>({coffee.ratings_count})</Text>
+                <Text style={styles.ratingText}>{displayItem.average_rating}</Text>
+                <Text style={styles.reviewsText}>({displayItem.ratings_count})</Text>
               </View>
               <View style={styles.roastBadge}>
-                <Text style={styles.roastText}>{coffee.roasted}</Text>
+                <Text style={styles.roastText}>{displayItem.roasted}</Text>
               </View>
             </View>
           </View>
@@ -120,14 +137,14 @@ const DetailScreen = () => {
           {/* Description */}
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionTitle}>Description</Text>
-            <Text style={styles.descriptionText}>{coffee.description}</Text>
+            <Text style={styles.descriptionText}>{displayItem.description}</Text>
           </View>
 
           {/* Size Selection */}
           <View style={styles.sizeContainer}>
             <Text style={styles.sizeTitle}>Size</Text>
             <View style={styles.sizeButtons}>
-              {coffee.prices.map((price, index) => (
+              {displayItem.prices.map((price, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
