@@ -43,8 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      // TODO: Implement your login logic here
-      // For demo purposes, creating a mock user
+
       const mockUser: User = {
         id: '1',
         email: email,

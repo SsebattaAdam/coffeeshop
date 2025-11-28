@@ -10,10 +10,14 @@ import {View, ActivityIndicator} from 'react-native';
 import {COLORS} from '../../core/constants/theme/theme';
 import type {CoffeeItem} from '../../core/store/types';
 
+import PaymentScreen from '../payments/screens/PaymentScreen';
+import type {CartItem} from '../../core/store/types';
+
 // Define your navigation param types
 export type RootStackParamList = {
-  MainTabs: undefined;
+  MainTabs: {screen?: string} | undefined;
   CoffeeDetails: { coffee: CoffeeItem };
+  Payment: { totalAmount: number; cartItems: CartItem[] };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -29,6 +33,7 @@ function NavigatorContent() {
         }}>
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
         <Stack.Screen name="CoffeeDetails" component={DetailScreen} />
+        <Stack.Screen name="Payment" component={PaymentScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
